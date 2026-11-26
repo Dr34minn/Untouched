@@ -1,0 +1,97 @@
+    ];
+    var bizInput = document.getElementById('bizInput'), bizSuggest = document.getElementById('bizSuggest');
+    var bizCard = document.getElementById('bizCard'), bizNone = document.getElementById('bizNone');
+    if (!bizInput) return; function norm(s){ return (s || '').toLowerCase().trim(); } function esc(s){ return s.replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); } function find(q){
+      q = norm(q); if (!q) return [];
+      return BIZ.filter(function(b){
+        if (norm(b.name).indexOf(q) > -1) return true;
+        return b.aliases.some(function(a){ return a.indexOf(q) > -1 || q.indexOf(a) > -1; });
+      });
+    } function chips(list){
+      bizSuggest.innerHTML = '';
+      list.forEach(function(b){
+        var c = document.createElement('button'); c.type = 'button'; c.className = 'biz-chip'; c.textContent = b.name;
+        c.addEventListener('click', function(){ bizInput.value = b.name; showBiz(b); });
+        bizSuggest.appendChild(c);
+      });
+    } function showBiz(b){
+      bizNone.classList.remove('show'); bizNone.textContent = '';
+      var html = '<div class="biz-mock"><p class="mh">' + b.mockHead + '</p>' + b.mock.join('') + '</div>' +
+        '<div class="biz-body"><p class="svc">' + b.svc + '</p><h3>' + b.title + '</h3>' +
+        '<div class="biz-ba"><div><small>Before</small>' + b.before + '</div>' +
+        '<div class="after"><small>After</small>' + b.after + '</div></div>';
+      if (b.note) html += '<p class="biz-note">' + b.note + '</p>';
+      if (b.wc !== undefined) html += '<p style="margin:2px 0 0"><button class="btn btn-ghost btn-sm" type="button" id="bizFull">See the full example ↓</button></p>';
+      html += '</div>';
+      bizCard.innerHTML = html; bizCard.classList.add('show');
+      if (b.wc !== undefined) {
+        document.getElementById('bizFull').addEventListener('click', function(){
+          if (window.__wcShow) window.__wcShow(b.wc);
+          document.getElementById('what-changes').scrollIntoView({behavior:'smooth', block:'start'});
+        });
+      }
+      if (b.quizV) {
+        var opt = document.querySelector('#q1 .opts button[data-v="' + b.quizV + '"]');
+        if (opt && opt.getAttribute('aria-pressed') !== 'true') opt.click();
+      }
+    } function fallback(typed){
+      showBiz({
+        svc:'01 · Full Service', title:'Everything handled, as one.',
+        mockHead:'Sample · A missed call, caught',
+        mock:['<p><b>Customer:</b> "Hi — tried calling, do you have anything open Saturday?"</p>',
+              '<p><b>Your shop, by text, 1 minute later:</b> "Sorry we missed you! Saturday 10am is open — book it here:"</p>',
+              '<p>Booked <span class="ok">✓</span> — while you were still with a customer.</p>'],
+        before:"Calls get missed, reviews sit unanswered, and the Google page drifts out of date — because you're busy running the place.",
+        after:'All of it handled for you, every month — Google & reviews, missed-call text-backs, bookings, your customer list, staff training and invoices. One company to call.',
+        note:'No exact example for “' + esc(typed) + '” yet — this is how it usually plays out. Every service in it is also in Full Service.'
+      });
+    }
+    document.getElementById('bizForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      var q = bizInput.value.trim();
+      if (!q) { bizInput.focus(); return; }
+      var f = find(q);
+      if (f.length) showBiz(f[0]); else fallback(q);
+      bizCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+    bizInput.addEventListener('input', function(){
+      var q = bizInput.value.trim();
+      if (!q) { bizNone.classList.remove('show'); bizNone.textContent = ''; chips(BIZ.slice(0, 9)); return; }
+      var f = find(q); chips(f.slice(0, 8));
+      if (f.length) { bizNone.classList.remove('show'); bizNone.textContent = ''; }
+      else { bizNone.textContent = 'No example for that one yet — hit “See an example” and we\'ll show you the closest picture.'; bizNone.classList.add('show'); }
+    });
+    chips(BIZ.slice(0, 9));
+  })();
+
+  /* ---------- Copy the DM ---------- */
+  (function(){
+    var btn = document.getElementById('copyDm'), ok = document.getElementById('copyOk');
+    if (!btn) return;
+    btn.addEventListener('click', function(){
+      var text = document.getElementById('dmText').innerText; function done(){ ok.classList.add('show'); setTimeout(function(){ ok.classList.remove('show'); }, 3000); } function fb(){
+        var ta = document.createElement('textarea'); ta.value = text;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fb);
+      else fb();
+    });
+  })();
+
+  /* ---------- Nov 21 live fix, re-applied: Fit-search placeholder (ASCII-only, \u escapes) ---------- */
+  (function(){
+    var bi = document.getElementById('bizInput');
+    if (bi) {
+      bi.setAttribute('placeholder', 'Search \u201cbakery\u201d, \u201cplumber\u201d, \u201cdentist\u201d, \u201cgym\u201d\u2026');
+      bi.setAttribute('aria-label', 'Search your kind of business');
+      bi.setAttribute('autocomplete', 'off');
+    }
+  })();
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+</footer>
+
+<div class="mbar" id="mbar"><a class="btn btn-sig" href="https://untouched.as.me/?appointmentType=100513740" target="_blank" rel="noopener">Book a free 10-minute chat</a></div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- progress, header, mobile bar, hero drift ---------- */
+  var prog = document.getElementById('prog'), header = document.getElementById('siteHeader');
+  var mbar = document.getElementById('mbar'), heroH = document.getElementById('heroH'), ticking = false; function onScroll(){
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function(){
+      var y = window.scrollY, h = document.documentElement.scrollHeight - innerHeight;
+      prog.style.transform = 'scaleX(' + (h > 0 ? y / h : 0) + ')';
+      header.classList.toggle('scrolled', y > 10);
+      var c = document.getElementById('contact').getBoundingClientRect();
+      mbar.classList.toggle('show', y > innerHeight * .8 && c.top > innerHeight);
+      if (!reduce && y < innerHeight) {
+        var p = y / innerHeight;
+        heroH.style.transform = 'translateY(' + (p * 50) + 'px) scale(' + (1 - p * .05) + ')';
+        heroH.style.opacity = String(1 - p * .7);
+      }
+      ticking = false;
+    });
+  }
+  addEventListener('scroll', onScroll, {passive:true});
+  addEventListener('resize', onScroll);
+  onScroll();
+  document.querySelectorAll('.hero h1 .w > span').forEach(function(el, i){ el.style.transitionDelay = (i * .09) + 's'; });
+  requestAnimationFrame(function(){ document.querySelector('.hero').classList.add('ready'); });
+
+  /* ---------- reveals, steps, nav highlight ---------- */
+  if ('IntersectionObserver' in window && !reduce) {
+    var ro = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -6% 0px', threshold:.06});
+    document.querySelectorAll('.reveal').forEach(function(el){ ro.observe(el); });
+    setTimeout(function(){ document.querySelectorAll('.reveal:not(.in)').forEach(function(el){ el.classList.add('in'); ro.unobserve(el); }); }, 900);
+    var steps = document.querySelectorAll('[data-step]');
+    var so = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) { steps.forEach(function(s){ s.classList.remove('on'); }); e.target.classList.add('on'); } });
+    }, {rootMargin:'-45% 0px -45% 0px'});
+    steps.forEach(function(s){ so.observe(s); });
+    steps[0].classList.add('on');
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+    document.querySelectorAll('[data-step]').forEach(function(el){ el.classList.add('on'); });
+  }
+  if ('IntersectionObserver' in window) {
+    var navLinks = document.querySelectorAll('nav.main [data-nav]');
+    var map = {'full-service':'full-service', services:'full-service', start:'start', web:'web', pricing:'pricing'};
+    var no = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) { var k = map[e.target.id]; navLinks.forEach(function(l){ l.classList.toggle('on', l.dataset.nav === k); }); } });
+    }, {rootMargin:'-45% 0px -50% 0px'});
+    ['full-service','services','start','web','pricing'].forEach(function(id){ var el = document.getElementById(id); if (el) no.observe(el); });
+  }
+
+  /* ---------- mobile menu ---------- */
+  var menuBtn = document.getElementById('menuBtn'), mnav = document.getElementById('mobileNav'); function setMenu(open){ mnav.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); }
+  menuBtn.addEventListener('click', function(){ setMenu(!mnav.classList.contains('open')); });
+  mnav.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ setMenu(false); }); });
+
+  /* ---------- open an add-on's "See how it works" when a link points to it ---------- */ function openAddon(id){
+    var card = document.getElementById(id); if (!card) return;
+    var d = card.querySelector('details'); if (d) d.open = true;
+    card.classList.add('flash'); setTimeout(function(){ card.classList.remove('flash'); }, 1600);
+  }
+  document.querySelectorAll('[data-open]').forEach(function(a){ a.addEventListener('click', function(){ openAddon(a.getAttribute('data-open')); }); });
+
+  /* ---------- What changes: stacked switchable cards ---------- */
+  (function(){
+    var stage = document.getElementById('wcStage'); if (!stage) return;
+    var cards = stage.querySelectorAll('.wc-card'), tabsW = document.querySelectorAll('#wcTabs [role="tab"]'); cards.forEach(function(c){ c.style.gridRow = '1'; });
+    var dots = document.querySelectorAll('#wcDots i'), N = cards.length, cur = 0; function show(i, focus){
+      cur = (i + N) % N;
+      cards.forEach(function(c, k){
+        var pos = (k - cur + N) % N;
+        c.setAttribute('data-pos', String(pos));
+        if (pos === 0) { c.removeAttribute('inert'); c.removeAttribute('aria-hidden'); }
+        else { c.setAttribute('inert', ''); c.setAttribute('aria-hidden', 'true'); }
+      });
+      tabsW.forEach(function(t, k){ t.setAttribute('aria-selected', String(k === cur)); t.tabIndex = k === cur ? 0 : -1; if (k === cur && focus) t.focus(); });
+      dots.forEach(function(d, k){ d.classList.toggle('on', k === cur); });
+    }
+    tabsW.forEach(function(t, k){
+      t.addEventListener('click', function(){ show(k, false); });
+      t.addEventListener('keydown', function(e){
+        var j = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') j = k + 1;
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') j = k - 1;
+        if (e.key === 'Home') j = 0; if (e.key === 'End') j = N - 1;
+        if (j !== null) { e.preventDefault(); show(j, true); }
+      });
+    });
+    stage.addEventListener('click', function(e){
+      var c = e.target.closest('.wc-card'); if (c && c.getAttribute('data-pos') === '1') show(cur + 1, false);
+    });
+    document.getElementById('wcNext').addEventListener('click', function(){ show(cur + 1, false); });
+    show(0, false);
+    window.__wcShow = function(i){ show(i, false); };
+  })();
+
+
+  /* ---------- Find your fit ---------- */
+  (function(){
+    var ans = {}, out = document.getElementById('fitOut');
+    var SHOP = {barber:'For a barbershop', cafe:'For a café or restaurant', salon:'For a salon', trades:'For a trades business', other:'For your shop'};

@@ -1,0 +1,108 @@
+    <nav class="main" aria-label="Main">
+      <a href="#full-service" data-nav="full-service">Services</a>
+      <a href="#pricing" data-nav="pricing">Packages</a>
+      <a href="#start" data-nav="start">How it starts</a>
+      <a href="#web" data-nav="web">Chat assistant</a>
+      <a class="btn btn-sig" href="https://untouched.as.me/?appointmentType=100513740" target="_blank" rel="noopener">Book a free 10-minute chat</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+<nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+  <a href="#full-service">Services</a>
+  <a href="#pricing">Packages</a>
+  <a href="#start">How it starts</a>
+  <a href="#web">Chat assistant</a>
+  <a class="btn btn-sig" href="https://untouched.as.me/?appointmentType=100513740" target="_blank" rel="noopener">Book a free 10-minute chat</a>
+</nav>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">For small shops in Durham &amp; the GTA</div>
+      <h1 id="heroH"><span class="w"><span>Small</span></span> <span class="w"><span>business</span></span> <span class="w"><span>services,</span></span> <span class="w"><span class="sig">handled.</span></span></h1>
+      <p class="lead">You run the business — we handle the rest. Your Google page, your reviews, missed calls, bookings, customer emails, staff training and unpaid invoices. Done for you, every month.</p>
+      <div class="row-btns">
+        <a class="btn btn-sig" href="#fit">Find your fit</a>
+        <a class="btn btn-ghost" href="https://untouched.as.me/?appointmentType=100513740" target="_blank" rel="noopener">Book a free 10-minute chat</a>
+      </div>
+      <p class="hero-call">Prefer to call? <a href="tel:+12899281647">(289) 928-1647</a></p>
+      <div class="chips">
+        <span class="chip">No contract</span>
+        <span class="chip">Pause for a slow month</span>
+        <span class="chip">Based in Oshawa</span>
+        <span class="chip">Work guarantee</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <a class="hero-offer" href="#full-service">
+        <span class="eyebrow sig">The main offer · Full Service</span>
+        <span class="ttl">Every service, as one</span>
+        <span class="sub">Most of what we do, in one package:</span>
+        <ul class="ticks">
+          <li>Google &amp; Reviews Only</li>
+          <li>Missed-Call Catcher</li>
+          <li>Email + Text List</li>
+          <li>Online Booking</li>
+          <li>Invoice Chaser</li>
+          <li>Plus 1 email a month to your customers</li>
+        </ul>
+        <span class="go">See what's in it →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FIND YOUR FIT -->
+<section class="block" id="fit" aria-labelledby="hfit">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow sig">Find your fit · 3 quick taps</div>
+      <h2 id="hfit">Not sure where to start?</h2>
+      <p class="lead">Search your kind of business to see an example of what changes — or tap three answers and we'll point you to the right thing. Totally optional — skip it if you'd rather just scroll.</p>
+    </div>
+    <div class="bizsearch reveal">
+      <p class="biz-label">See an example for your kind of business</p>
+      <form class="biz-form" id="bizForm" role="search">
+        <input id="bizInput" type="search" placeholder="Search “bakery”, “plumber”, “dentist”, “gym”…" aria-label="Search your kind of business" autocomplete="off">
+        <button class="btn btn-sig" type="submit">See an example</button>
+      </form>
+      <div class="biz-suggest" id="bizSuggest" aria-label="Business types"></div>
+      <p class="biz-none" id="bizNone"></p>
+      <div class="biz-card" id="bizCard" aria-live="polite"></div>
+    </div>
+    <div class="fit reveal">
+      <div class="fit-qs">
+        <fieldset class="q" id="q1">
+          <legend><span class="qn">1</span>What kind of shop do you run?</legend>
+          <div class="opts" data-q="shop">
+            <button type="button" aria-pressed="false" data-v="barber">Barbershop</button>
+            <button type="button" aria-pressed="false" data-v="cafe">Café or restaurant</button>
+            <button type="button" aria-pressed="false" data-v="salon">Salon</button>
+            <button type="button" aria-pressed="false" data-v="trades">Trades</button>
+            <button type="button" aria-pressed="false" data-v="other">Something else</button>
+          </div>
+        </fieldset>
+        <fieldset class="q wait" id="q2">
+          <legend><span class="qn">2</span>What's slipping the most right now?</legend>
+          <div class="opts" data-q="slip">
+            <button type="button" aria-pressed="false" data-v="calls">Missed calls</button>
+            <button type="button" aria-pressed="false" data-v="reviews">Google &amp; reviews</button>
+            <button type="button" aria-pressed="false" data-v="booking">Bookings</button>
+            <button type="button" aria-pressed="false" data-v="invoices">Unpaid invoices</button>
+            <button type="button" aria-pressed="false" data-v="training">Training new staff</button>
+            <button type="button" aria-pressed="false" data-v="regulars">Getting customers back</button>
+            <button type="button" aria-pressed="false" data-v="all">Honestly, a bit of everything</button>
+          </div>
+        </fieldset>
+        <fieldset class="q wait" id="q3">
+          <legend><span class="qn">3</span>How much do you want off your plate?</legend>
+          <div class="opts" data-q="scope">
+            <button type="button" aria-pressed="false" data-v="one">Just fix that one thing</button>
+            <button type="button" aria-pressed="false" data-v="all">Take it all off my plate</button>

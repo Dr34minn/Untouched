@@ -1,0 +1,106 @@
+.compare-table th,.compare-table td{padding:16px 18px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);line-height:1.45}
+.compare-table thead th{font:700 17px/1.2 var(--disp);color:var(--paper);background:var(--ink)}
+.compare-table thead th:last-child{color:var(--signal)}
+.compare-table tbody th{font-weight:600;color:var(--paper);white-space:nowrap;width:180px}
+.compare-table tbody td{color:var(--soft)}
+.compare-table tbody td:last-child{color:var(--paper);font-weight:500}
+.compare-table tbody tr:last-child th,.compare-table tbody tr:last-child td{border-bottom:0}
+.compare-note{margin-top:16px;color:var(--soft);font-size:16px}
+
+/* what shops say / example shop */
+.example-banner{background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.55);border-radius:14px;padding:14px 18px;font-weight:600;color:var(--paper);font-size:15px;margin-bottom:22px}
+.example-card{background:var(--ink2);border:1px solid var(--line);border-radius:24px;padding:clamp(24px,3.4vw,40px);display:flex;flex-direction:column;gap:20px}
+.example-card h3{font-size:clamp(28px,3.4vw,40px)}
+.example-meta{color:var(--soft);font-size:16px;line-height:1.6}
+.example-meta b{color:var(--paper)}
+.example-pitch{font-size:18px;line-height:1.6;color:var(--paper);padding-left:18px}
+.example-week{display:flex;flex-direction:column;gap:12px}
+.example-week h4{margin:0;font-family:var(--disp);font-weight:700;font-size:20px;line-height:1.2;color:var(--paper)}
+.ew-list{margin:0;padding-left:20px;color:var(--soft);display:flex;flex-direction:column;gap:8px}
+.ew-list li::marker{color:var(--signal)}
+.ew-list li b{color:var(--paper)}
+.review-quote{background:var(--ink);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.review-quote blockquote{margin:0;color:var(--paper);font-size:16px;line-height:1.55;font-style:italic}
+.review-quote .reply{color:var(--soft);font-size:15px;line-height:1.55}
+.review-quote .reply small{display:block;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--signal);margin-bottom:4px;font-style:normal}
+.example-price{font-size:17px;color:var(--paper);background:rgba(124,58,237,.08);border-radius:14px;padding:16px 18px;line-height:1.55}
+@media (max-width:960px){ .founders-grid{grid-template-columns:minmax(0,5fr)}
+  .compare-wrap{overflow-x:visible}
+  .compare-table{min-width:0;display:block}
+  .compare-table thead{display:none}
+  .compare-table tbody,.compare-table tr,.compare-table th,.compare-table td{display:block;width:100%}
+  .compare-table tr{padding:14px 0;border-bottom:1px solid var(--line)}
+  .compare-table tr:last-child{border-bottom:0}
+  .compare-table th,.compare-table td{border-bottom:0;padding:6px 18px}
+  .compare-table tbody th{white-space:normal;color:var(--signal);font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+}
+
+/* pricing */
+.gl-grid{display:grid;grid-template-columns:repeat(3,minmax(0,5fr));gap:14px}
+.gl{display:flex;flex-direction:column;gap:8px;background:var(--ink2);border:1px solid var(--line);border-radius:var(--r);padding:22px;text-decoration:none;color:var(--paper);transition:border-color .25s, transform .25s}
+.gl:hover{border-color:var(--signal);transform:translateY(-3px);color:var(--paper)}
+.gl .n{font:500 12px var(--mono);letter-spacing:.1em;color:var(--signal)}
+.gl b{font:700 21px/1.1 var(--disp)}
+.gl strong{font:800 30px/1 var(--disp);letter-spacing:-.02em;margin-top:auto;padding-top:6px}
+.gl small{color:var(--soft);font-size:14px}
+.gl.lead-card{grid-column:1/-1;background:var(--fill);border-color:var(--fill)}
+.gl.lead-card .n,.gl.lead-card small{color:var(--paper)}
+.gl.lead-card strong{font-size:48px}
+
+/* contact */
+.contact{background:radial-gradient(900px 500px at 10% 100%,rgba(124,58,237,.14),transparent 60%),var(--ink)}
+.contact h2{font-size:clamp(46px,7.4vw,100px);line-height:.92;letter-spacing:-.04em}
+.contact h2 em{font-style:normal;color:var(--signal)}
+.contact .grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px;align-items:end}
+.cbox{border:2px dashed var(--fill);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:16px;background:rgba(124,58,237,.05)}
+.cbox .line{display:flex;flex-direction:column;gap:4px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.cbox .line:last-of-type{border-bottom:0}
+.cbox .line small{font:500 12px var(--mono);letter-spacing:.12em;color:var(--mute);text-transform:uppercase}
+.cbox .line span{font:700 22px/1.25 var(--disp)}
+.cbox .line span.tba{color:var(--signal)} footer{padding:40px 0 110px;color:var(--mute);font-size:14px;border-top:1px solid var(--line)} footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px} footer a{color:var(--soft)}
+.mbar{display:none}
+
+@media (max-width:960px){
+  :root{--head:62px}
+  .wrap{padding:0 20px}
+  nav.main{display:none}
+  .menu-btn{display:flex}
+  .mobile-nav{position:fixed;inset:var(--head) 0 auto 0;z-index:99;background:var(--ink);border-bottom:1px solid var(--line);padding:12px 20px 24px;flex-direction:column;gap:4px}
+  .mobile-nav.open{display:flex}
+  .mobile-nav a:not(.btn){color:var(--paper);text-decoration:none;font:700 24px/1 var(--disp);padding:14px 0;border-bottom:1px solid var(--line)}
+  .mobile-nav .btn{margin-top:14px}
+  .hero-grid,.fit,.start-grid,.contact .grid,.prices2,.web-grid{grid-template-columns:minmax(0,5fr)}
+  .web-copy{position:static}
+  .start-sticky{position:static}
+  .steps{padding:0}
+  .step{min-height:0;padding:24px}
+  .incl,.addon-grid,.gl-grid{grid-template-columns:minmax(0,5fr)}
+  section.block{padding:76px 0} .fit-out{min-height:0}
+  .mbar{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:105;transform:translateY(140%);transition:transform .3s}
+  .mbar.show{transform:none}
+  .mbar .btn{flex:1;min-height:56px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  body{font-size:16px}
+}
+@media (min-width:961px) and (max-width:1100px){ .incl,.gl-grid{grid-template-columns:repeat(2,minmax(0,5fr))} }
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  .hero h1 .w > span{transform:none}
+  .step{opacity:1;transform:none}
+}
+/* --- Nov 21 live fixes, re-applied --- */
+h1,h2,h3{color:var(--paper)}
+.gl{color:var(--paper)}
+.line{color:var(--paper)}
+.q legend{color:var(--paper)}
+.bizsearch .biz-label{color:var(--paper)}
+@media (min-width:901px){.page-section{margin-top:-90px!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"><span id="prog"></span></div>
+
+<header class="site" id="siteHeader">
+  <div class="wrap">

@@ -1,0 +1,108 @@
+    var WC = {barber:0, cafe:1, salon:2, trades:3};
+    var PICK = {
+      calls:   {id:'s03', name:'Missed-Call Catcher', line:'every missed call gets a friendly text back within a minute, with your booking link.'},
+      reviews: {id:'s02', name:'Google & Reviews Only', line:'your Google page kept fresh and every review answered.'},
+      booking: {id:'s05', name:'Online Booking', line:'customers book themselves and get reminders — no more phone tag. Setup waived on Full Service.'},
+      invoices:{id:'s07', name:'Invoice Chaser', line:'polite follow-ups on unpaid invoices until they\'re paid, plus a weekly update.'},
+      training:{id:'s06', name:'Staff Training', line:'short phone courses for new staff — paid per person, per course, on top of the monthly fee.'},
+      regulars:{id:'s04', name:'Email + Text List', line:'one email a month, so past customers come back.'}
+    };
+    var FULL = {id:'full-service', name:'Full Service', line:'every service, as one. We take the whole list off your plate.'};
+    var ESSENTIAL = {id:'essential', name:'Essential', line:'chat assistant, missed-call text-back, and your Google page kept fresh — the essentials for a smaller shop.'};
+    var qs = {shop:document.getElementById('q1'), slip:document.getElementById('q2'), scope:document.getElementById('q3')}; function lock(){
+      qs.slip.classList.toggle('wait', !ans.shop);
+      qs.scope.classList.toggle('wait', !ans.slip || ans.slip === 'all');
+      qs.scope.querySelectorAll('button').forEach(function(b){ b.disabled = (ans.slip === 'all'); });
+    } function render(){
+      out.innerHTML = '';
+      var ready = ans.shop && ans.slip && (ans.slip === 'all' || ans.scope);
+      out.classList.toggle('has', !!ready);
+      if (!ready) {
+        var e = document.createElement('p'); e.className = 'empty';
+        e.textContent = !ans.shop ? 'Your answer shows up here. No email, no sign-up — just a pointer.' : (!ans.slip ? 'Nice. Now — what\'s slipping the most?' : 'Last one: just that one thing, or all of it?');
+        out.appendChild(e); return;
+      }
+      var essential = (ans.shop === 'barber' || ans.shop === 'salon') && (ans.scope === 'all' || ans.slip === 'all');
+      var full = (ans.slip === 'all' || ans.scope === 'all') && !essential;
+      var r = full ? FULL : (essential ? ESSENTIAL : PICK[ans.slip]);
+      var eb = document.createElement('div'); eb.className = 'eyebrow sig'; eb.textContent = full ? 'Your fit · the main offer' : (essential ? 'Your fit · for smaller shops' : 'Your fit · add-on');
+      var big = document.createElement('div'); big.className = 'big'; big.textContent = r.name;
+      var p = document.createElement('p'); p.textContent = SHOP[ans.shop] + ': ' + r.line;
+      out.appendChild(eb); out.appendChild(big); out.appendChild(p);
+      if (essential) { var n = document.createElement('p'); n.style.fontSize = '14px'; n.textContent = 'Want the socials, email list and everything else too? That is Full Service.'; out.appendChild(n); }
+      else if (!full) { var n = document.createElement('p'); n.style.fontSize = '14px'; n.textContent = 'Want more later? Most of it is included in Full Service — Staff Training is extra, per person, per course.'; out.appendChild(n); }
+      var row = document.createElement('div'); row.className = 'row-btns';
+      var see = document.createElement('a'); see.className = 'btn btn-sig btn-sm'; see.href = '#' + r.id; see.textContent = full ? 'See what\'s in Full Service' : (essential ? 'See Essential' : 'See how it works');
+      if (!full && !essential) see.addEventListener('click', function(){ openAddon(r.id); });
+      var chat = document.createElement('a'); chat.className = 'btn btn-ghost btn-sm'; chat.href = 'https://untouched.as.me/?appointmentType=100513740'; chat.target = '_blank'; chat.rel = 'noopener'; chat.textContent = 'Book a free 10-minute chat';
+      row.appendChild(see); row.appendChild(chat); out.appendChild(row);
+      var again = document.createElement('button'); again.type = 'button'; again.className = 'linkbtn'; again.textContent = 'Start over';
+      again.addEventListener('click', reset); out.appendChild(again);
+    } function reset(){
+      ans = {};
+      document.querySelectorAll('#fit .opts button').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+      lock(); render(); var f = qs.shop.querySelector('button'); if (f) f.focus();
+    }
+    document.querySelectorAll('#fit .opts').forEach(function(g){
+      var key = g.getAttribute('data-q');
+      g.querySelectorAll('button').forEach(function(b){
+        b.addEventListener('click', function(){
+          ans[key] = b.getAttribute('data-v');
+          g.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+          if (key === 'shop' && WC[ans.shop] !== undefined && window.__wcShow) window.__wcShow(WC[ans.shop]);
+          if (key === 'slip' && ans.slip === 'all') { ans.scope = null; qs.scope.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed','false'); }); }
+          lock(); render();
+        });
+      });
+    });
+    lock(); render();
+  })();
+
+  /* ---------- chat assistant demo: DEMO BARBERSHOP — example only (made-up services and hours) ---------- */
+  var MENU = 'Classic cut\nSkin fade\nBeard trim & line-up\nCut + beard\nKids cut (12 & under)\nHot towel shave';
+  var HOURS = 'Tue–Fri: 10 am – 7 pm\nSat: 9 am – 5 pm\nSun & Mon: closed';
+  var BOOK = {label:'Book a time', act:'book'}; function A(text, acts){ return {text:text, acts:acts || []}; }
+  var R = {
+    hello: A('Hey! Welcome to the demo barbershop. I can help with services, hours and booking — tap a button or type a question.'),
+    prices: A('Here\'s what we do:\n' + MENU, [BOOK, {label:'Hours', act:'q:hours', alt:true}]), fade: A('A skin fade takes about 45 minutes. Want to grab a time?', [BOOK]),
+    cut: A('A classic cut takes about 30 minutes.', [BOOK]),
+    beard: A('Beard trim & line-up, or a cut + beard — want to grab a time?', [BOOK]),
+    kids: A('Kids cuts (12 & under) are available — want to grab a time?', [BOOK]),
+    shave: A('A hot towel shave is available — want to grab a time?', [BOOK]),
+    hours: A('Our hours (demo):\n' + HOURS, [BOOK]),
+    today: A('Our hours (demo) are:\n' + HOURS + '\n\nThe quickest way to get a chair is to book a time.', [BOOK]),
+    book: A('Easy — pick a service, a barber and a time, and you\'ll get a confirmation text. Booking takes about a minute.', [BOOK, {label:'See services', act:'q:prices', alt:true}]),
+    walkin: A('Walk-ins are welcome when a chair is free, but booking guarantees your spot — Saturdays fill up fast.', [BOOK]),
+    cancel: A('No problem — use the link in your confirmation text to change or cancel your appointment.', [BOOK]),
+    where: A('This is a demo shop, so there\'s no real address. On a real shop\'s site, I\'d give the address and a directions link here.'),
+    pay: A('In this demo: card, tap and cash are all fine. On a real site I\'d answer with the shop\'s own payment options.'),
+    thanks: A('Anytime — see you in the chair!', [BOOK]), fallback: A('I can help with services, hours and booking for the shop. For anything else, the shop\'s own contact details would show here.', [BOOK, {label:'Services', act:'q:prices', alt:true}, {label:'Hours', act:'q:hours', alt:true}])
+  }; function has(t, w){ for (var i = 0; i < w.length; i++) if (t.indexOf(w[i]) > -1) return true; return false; } function route(q){
+    var t = ' ' + q.toLowerCase().replace(/[^a-z0-9+&\s-]/g, ' ') + ' ';
+    if (has(t, ['fade'])) return R.fade;
+    if (has(t, ['kid','child','son','daughter','boy'])) return R.kids;
+    if (has(t, ['beard','line up','line-up','lineup','edge'])) return R.beard;
+    if (has(t, ['shave','towel'])) return R.shave;
+    if (has(t, ['walk in','walk-in','walkin'])) return R.walkin;
+    if (has(t, ['cancel','reschedul','change my','move my'])) return R.cancel;
+    if (has(t, ['price','cost','much','menu','charge','rate','services'])) return R.prices;
+    if (has(t, ['haircut','hair cut',' cut '])) return R.cut;
+    if (has(t, ['today','tonight','right now','now '])) return R.today;
+    if (has(t, ['hour','open','close','when ','sunday','monday','saturday','weekend','time do'])) return R.hours;
+    if (has(t, ['book','appointment','slot','reserve','available','availability','schedule'])) return R.book;
+    if (has(t, ['where','address','location','located','park','direction'])) return R.where;
+    if (has(t, ['pay','card','cash','debit','tap'])) return R.pay;
+    if (has(t, ['thank','thx','cheers'])) return R.thanks;
+    if (has(t, [' hi ',' hey ','hello',' yo ','sup'])) return R.hello;
+    return R.fallback;
+  }
+  var QUICK = [['Services','What services do you offer?'],['Fade','How long does a skin fade take?'],['Hours','What are your hours?'],['Book a time','Can I book an appointment?'],['Walk-ins?','Do you take walk-ins?'],['Kids cut','Do you do kids cuts?']];
+
+  (function makeChat(root){
+    root.innerHTML =
+      '<div class="chat-top"><div class="who"><div class="dot" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.6 7.5L20 16M8.6 16.5L20 8"/></svg></div><div><b>Demo Barbershop · chat assistant</b><small>Example only — made-up shop</small></div></div></div>' +
+      '<div class="chat-log" role="log" aria-live="polite"></div>' +
+      '<div class="chat-quick" aria-label="Suggested questions"></div>' +
+      '<form class="chat-form" autocomplete="off"><label class="sr" for="askDemo">Ask the demo barbershop\'s chat assistant</label><input id="askDemo" type="text" maxlength="200" placeholder="Ask about services, hours, booking…"><button type="submit" aria-label="Send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>';
+    var log = root.querySelector('.chat-log'), quick = root.querySelector('.chat-quick');
+    var form = root.querySelector('form'), input = root.querySelector('input'); function scroll(){ log.scrollTop = log.scrollHeight; } function add(role, text, acts){
